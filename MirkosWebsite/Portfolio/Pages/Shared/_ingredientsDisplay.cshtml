@@ -1,0 +1,30 @@
+﻿@using Quaverflow.Data.FoodModels;
+@model Ingredient
+
+
+
+
+<div class="row">
+    <div class="col h4 text-center">@Model.Name</div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <div>Group: @Model.IngredientGroup.Group</div>
+        <div>Subgroup: @Model.IngredientSubGroup.SubGroup</div>
+        <img class="rounded" src="~/image/food/@Model.ImageFileName" alt="ingredientImage"/>
+    </div>
+    <div class="col-10 column-full my-auto">
+        <h5>
+            @if (!string.IsNullOrEmpty(Model.ScientificName))
+            {
+                <span>Scientific Name: @Model.ScientificName</span>
+            }
+        </h5>
+        <p>
+            @Model.Description
+        </p>
+    </div>
+</div>
+<hr class="muted" />
+

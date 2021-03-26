@@ -1,0 +1,120 @@
+﻿@page
+
+@model Portfolio.Pages.Food.NewRecipeStepsModel
+@{
+    ViewData["Title"] = "Steps";
+}
+<div class="image-recipe-steps full-width">
+    <div class="layer  vcenter-item">
+        <div class="row col-md-12 text-center text-light">
+            <div class="col-md-12 text-light">
+                <h2 class="display-4">ADD THE REQUIRED STEPS</h2>
+            </div>
+            <div class="col-md-12">
+                <p class="lead">
+                    1) MAKE SURE EVERY STEP IS CLEAR AND SELF CONTAINED. <br />
+                    2) HONOR THE INGREDIENT QUANTITIES YOU PREVIOUSLY SELECTED.<br />
+                    3) ADD YOUR VIDEO FOR EACH OF THE STEPS (YOUTUBE ONLY).
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+
+    <h4>Ingredients</h4>
+    <div class="row">
+        <div class="col-md-2">
+            Name
+        </div>
+        <div class="col-md-2">
+            Quantity
+        </div>
+        <div class="col-md-8">
+            Notes
+        </div>
+    </div>
+    @foreach (var ingredient in Model.Recipe.Ingredients)
+    {
+        <div class="row">
+            <div class="col-md-2">
+                @ingredient.Ingredient.Name
+            </div>
+            <div class="col-md-2">
+                @ingredient.Quantity @ingredient.UnitMeasure
+            </div>
+            <div class="col-md-8">
+                @ingredient.Notes
+            </div>
+        </div>
+    }
+    <form method="post" id="recipeStepsForm">
+        <div class="input-form">
+            <div id="clonableContainer">
+                <div class="clonable">
+                    <hr class="muted" />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Step title</label>
+                            <input asp-for="Recipe.Steps[0].Name" class="form-control" id="notEmpty0" />
+                            <span asp-validation-for="Recipe.Steps[0].Name" class="text text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label>Step body</label>
+                            <textarea class="form-control rounded-0" id="notEmptyText0" rows="10" asp-for="Recipe.Steps[0].Body"></textarea>
+                            <span asp-validation-for="Recipe.Steps[0].Body" class="text text-danger small"></span>
+
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label>Embed video</label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input asp-for="Recipe.Steps[0].Video" class="form-control" />
+                                    <span class="input-group-btn">
+                                        <button disabled class="btn btn-dark">
+                                            <i class="fas fa-angle-left"></i>
+                                            <i class="fas fa-angle-right"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input class="btn btn-sm btn-success" id="add" value="Add Step" />
+        <input class="btn btn-sm btn-danger" id="remove" value="Remove Step" />
+        <input type="submit" name="btn" value="Submit" class="btn btn-primary m-2  float-right" />
+        <input hidden asp-for="Recipe.Name" value="@Model.Recipe.Name" />
+        <input hidden asp-for="Recipe.Serves" value="@Model.Recipe.Serves" />
+        <input hidden asp-for="Recipe.CreatedBy" value="@Model.Recipe.CreatedBy" />
+        <input hidden asp-for="Recipe.Video" value="@Model.Recipe.Video" />
+    </form>
+
+    <div class="modal fade" id="error" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-dark">Warning!</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="alertEmptyField" class="text-dark"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+}

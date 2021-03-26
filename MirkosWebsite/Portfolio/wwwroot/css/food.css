@@ -1,0 +1,64 @@
+﻿.youtubeVid {
+    width: 100%;
+    min-height: 304px;
+    min-width: 324px; 
+    float: none;
+    clear: both;
+    margin: 2px auto;
+}
+
+.recipe-video {
+
+    min-height:432px;
+    min-width:768px;
+}
+
+.sub-group {
+    background-color: ghostwhite;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: hidden;
+}
+
+.root-group {
+    background-color: ghostwhite;
+}
+
+.image-recipe-writer {
+    background-image: url(../image/food/RecipeWriter.jpg);
+    background-position-y: 30%;
+    height: 500px;
+}
+
+.image-recipe-steps {
+    background-image: url(../image/food/RecipeSteps.jpg);
+    background-position-y: 30%;
+    height: 500px;
+}
+
+.image-ingredients {
+    background-image: url(../image/food/Ingredients.jpg);
+    background-position-y: 30%;
+    height: 500px;
+}
+
+.image-add-ingredients {
+    background-image: url(../image/food/AddIngredients.jpg);
+    background-position-y: 30%;
+    height: 500px;
+}
+
+.image-recipes {
+    background-image: url(../image/food/Recipes.jpg);
+    background-position-y: 60%;
+    height: 500px;
+}
+
+
+
+.image-countries {
+    background-image: url(../image/Covid/countries.jpg);
+    background-position-y: 60%;
+    height: 500px;
+}

@@ -1,0 +1,387 @@
+﻿@page
+@using System.Linq;
+@model Portfolio.Pages.Covid.InternationalStatisticsModel
+@{
+}
+<div class="mt-3">
+    <div id="stats-container">
+        <div class="row">
+            <div class="col-md-6 text-dark text-center h5"><strong>Total deaths</strong></div>
+            <div class="col-md-6 text-dark text-center h5"><strong>Total infections</strong></div>
+        </div>
+        <div class="row ">
+            <div class="col-md-6 stats-height-700" id="regions"></div>
+            <div class="col-md-6 stats-height-700" id="regions1"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 stats-height-1000" id="dailyDeathInfections"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 stats-height-500" id="totalDeathInfections"></div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6 stats-height-700" id="weeklyDeaths"></div>
+            <div class="col-md-6 stats-height-700" id="weeklyCases"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 stats-height-500" id="HDIDeaths"></div>
+            <div class="col-md-6 stats-height-500" id="hospitalBeds"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 stats-height-1000" id="populationDensity"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 stats-height-1000" id="lifeExpectancy"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+      google.charts.load('current', {
+        'packages':['geochart'],
+        'mapsApiKey': 'AIzaSyBVTqbQpoCoVS_XyBaEcgXfmhS-XSYMiNk'
+      });
+      google.charts.setOnLoadCallback(drawRegionsMap);
+
+        function drawRegionsMap() {
+
+            var countries = [];
+            var totalDeaths = [];
+
+            @foreach(var country in Model.Countries)
+            {
+                <text>countries.push('@country.Name');</text>
+                <text>totalDeaths.push(parseInt('@country.DailySummary[^1].TotalDeaths'));</text>
+            }
+            var data = new window.google.visualization.DataTable();
+            data.addColumn('string', 'Country');
+            data.addColumn('number', 'Total Deaths');
+
+            for (var i = 0; i < countries.length; i++)
+            {
+                data.addRow([countries[i], totalDeaths[i]]);
+            }
+            var options = {
+                colors: ['#ffbaba','#c40000']};
+
+        var chart = new window.google.visualization.GeoChart(document.getElementById('regions'));
+
+        chart.draw(data, options);
+      }
+    </script>
+    <script type="text/javascript">
+      google.charts.load('current', {
+        'packages':['geochart'],
+        'mapsApiKey': 'AIzaSyBVTqbQpoCoVS_XyBaEcgXfmhS-XSYMiNk'
+      });
+      google.charts.setOnLoadCallback(drawRegionsMap);
+
+        function drawRegionsMap() {
+
+            var countries = [];
+            var totalCases = [];
+
+            @foreach(var country in Model.Countries)
+            {
+                <text>countries.push('@country.Name');</text>
+                <text>totalCases.push(parseInt('@country.DailySummary[^1].TotalCases'));</text>
+            }
+            var data = new window.google.visualization.DataTable();
+            data.addColumn('string', 'Country');
+            data.addColumn('number', 'Total Cases');
+
+            for (var i = 0; i < countries.length; i++)
+            {
+                data.addRow([countries[i], totalCases[i]]);
+            }
+            var options = {
+                colors: ['#ffe3a6','#c97200']};
+
+        var chart = new window.google.visualization.GeoChart(document.getElementById('regions1'));
+
+        chart.draw(data, options);
+      }
+    </script>
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new window.google.visualization.DataTable();
+
+                data.addColumn('date', 'Date');
+                data.addColumn('number', 'Cases');
+                data.addColumn('number', 'Deaths');
+
+                var month = [];
+                var day = [];
+                var year = [];
+                var cases = [];
+                var deaths = [];
+                    @foreach (var day in Model.World.DailySummary)
+                    {
+                        <text>year.push('@day.Date.Year');</text>
+                        <text>month.push('@day.Date.Month');</text>
+                        <text>day.push('@day.Date.Day');</text>
+                        <text>cases.push(parseFloat('@day.NewCases'));</text>
+                        <text>deaths.push(parseFloat('@day.NewDeaths'));</text>
+                    }
+                for (var i = 0; i < cases.length; i++) {
+                    data.addRow([new Date(year[i], month[i]-1, day[i]), cases[i], deaths[i]]);
+                }
+
+                var options = {
+                    title: 'Daily World Covid-19 infections and deaths (2020).',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new window.google.visualization.LineChart(document.getElementById('dailyDeathInfections'));
+
+                chart.draw(data, options);
+            }
+    </script>
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new window.google.visualization.DataTable();
+
+                data.addColumn('string', 'Day');
+                data.addColumn('number', 'Deaths');
+
+                var days = [];
+                var deaths = [];
+                    @foreach (var day in Model.DeathsDaysOfTheWeek)
+                    {
+                        <text>days.push('@day.Key');</text>
+                        <text>deaths.push(parseFloat('@day.Value'));</text>
+                    }
+                for (var i = 0; i < days.length; i++) {
+                    data.addRow([days[i], deaths[i]]);
+                }
+
+                var options = {
+                    title: 'Reported deaths by day of the week.',
+                    colors: ["#cf1b0e"],
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new window.google.visualization.ColumnChart(document.getElementById('weeklyDeaths'));
+
+                chart.draw(data, options);
+            }
+    </script>
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new window.google.visualization.DataTable();
+
+                data.addColumn('date', 'Date');
+                data.addColumn('number', 'Cases');
+                data.addColumn('number', 'Deaths');
+
+                var month = [];
+                var day = [];
+                var year = [];
+                var cases = [];
+                var deaths = [];
+                    @foreach (var day in Model.World.DailySummary.OrderBy(d => d.Date))
+                    {
+                        <text>year.push('@day.Date.Year');</text>
+                        <text>month.push('@day.Date.Month');</text>
+                        <text>day.push('@day.Date.Day');</text>
+                        <text>cases.push(parseFloat('@day.TotalCases'));</text>
+                        <text>deaths.push(parseFloat('@day.TotalDeaths'));</text>
+                    }
+                for (var i = 0; i < cases.length; i++) {
+                    data.addRow([new Date(year[i], month[i]-1, day[i]), cases[i], deaths[i]]);
+                }
+
+                var options = {
+                    title: 'Total World Covid-19 infections and deaths (2020)',
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new window.google.visualization.LineChart(document.getElementById('totalDeathInfections'));
+
+                chart.draw(data, options);
+            }
+    </script>
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new window.google.visualization.DataTable();
+
+                data.addColumn('string', 'Day');
+                data.addColumn('number', 'Cases');
+
+                var days = [];
+                var deaths = [];
+                    @foreach (var day in Model.CasesDaysOfTheWeek)
+                    {
+                        <text>days.push('@day.Key');</text>
+                        <text>deaths.push(parseFloat('@day.Value'));</text>
+                    }
+                for (var i = 0; i < days.length; i++) {
+                    data.addRow([days[i], deaths[i]]);
+                }
+
+                var options = {
+                    title: 'Reported cases by day of the week.',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new window.google.visualization.ColumnChart(document.getElementById('weeklyCases'));
+
+                chart.draw(data, options);
+            }
+    </script>
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new window.google.visualization.DataTable();
+
+                data.addColumn('number', 'Human development index');
+                data.addColumn('number', 'Deaths');
+
+                var hdi = [];
+                var deaths = [];
+                    @foreach (var country in Model.Countries.Where(c=>c.HumanDevelopmentIndex > 0).OrderBy(c => c.HumanDevelopmentIndex))
+                    {
+                        <text>hdi.push(parseFloat('@country.HumanDevelopmentIndex'));</text>
+                        <text>deaths.push(parseFloat('@country.RatioDeathToPopulation'));</text>
+                    }
+                for (var i = 0; i < hdi.length; i++) {
+                    data.addRow([hdi[i], deaths[i]]);
+                }
+
+                var options = {
+                    title: 'Relation between human development index and percentage of Covid-19 deaths by per Country.',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new window.google.visualization.ColumnChart(document.getElementById('HDIDeaths'));
+
+                chart.draw(data, options);
+            }
+    </script>
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new window.google.visualization.DataTable();
+
+                data.addColumn('number', 'Beds x 1000');
+                data.addColumn('number', 'Deaths');
+
+                var beds = [];
+                var deaths = [];
+                    @foreach (var country in Model.Countries.Where(c=>c.HospitalBedsPerThousand != null).OrderBy(c => c.HumanDevelopmentIndex))
+                    {
+                        <text>beds.push(parseFloat('@if (country.HospitalBedsPerThousand != null)
+                                                    {
+                                                        @(Math.Round((double) country.HospitalBedsPerThousand * 2, MidpointRounding.AwayFromZero) / 2)
+                                                    }'));</text>
+                        <text>deaths.push(parseFloat('@country.RatioDeathToPopulation'));</text>
+                    }
+                for (var i = 0; i < beds.length; i++) {
+                    data.addRow([beds[i], deaths[i]]);
+                }
+
+                var options = {
+                    title: 'Relation between hospital beds per 1000 people and percentage of Covid-19 deaths by per Country.',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new window.google.visualization.ColumnChart(document.getElementById('hospitalBeds'));
+
+                chart.draw(data, options);
+            }
+    </script>
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new window.google.visualization.DataTable();
+
+                data.addColumn('number', 'Population Density');
+                data.addColumn('number', 'Deaths');
+
+                var density = [];
+                var deaths = [];
+                    @foreach (var country in Model.Countries
+                                                  .Where(c=>c.PopulationDensity != null
+                                                  && c.PopulationDensity > 0
+                                                  && c.PopulationDensity < 600)
+                                                  .OrderBy(c => c.PopulationDensity))
+                    {
+                        <text>density.push(parseFloat('@if (country.PopulationDensity != null)
+                                                       {
+                                                           @(Math.Round((double) country.PopulationDensity / 10, MidpointRounding.AwayFromZero) * 10)
+                                                       }'));</text>
+                        <text>deaths.push(parseFloat('@country.RatioDeathToPopulation'));</text>
+                    }
+                for (var i = 0; i < density.length; i++) {
+                    data.addRow([density[i], deaths[i]]);
+                }
+
+                var options = {
+                    title: 'Relation between population density and Covid-19 deaths.',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new window.google.visualization.ColumnChart(document.getElementById('populationDensity'));
+
+                chart.draw(data, options);
+            }
+    </script>
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new window.google.visualization.DataTable();
+
+                data.addColumn('number', 'Life Expectancy');
+                data.addColumn('number', 'Deaths');
+
+                var lifeX = [];
+                var deaths = [];
+                    @foreach (var country in Model.Countries
+                                                  .Where(c=>c.LifeExpectancy != null
+                                                  && c.LifeExpectancy > 0)
+                                                  .OrderBy(c => c.LifeExpectancy))
+                    {
+                        <text>lifeX.push(parseFloat('@if (country.LifeExpectancy != null)
+                                                     {
+                                                         @Math.Round((double) country.LifeExpectancy, 0)
+                                                     }'));</text>
+                        <text>deaths.push(@country.RatioDeathToPopulation);</text>
+                    }
+                for (var i = 0; i < lifeX.length; i++) {
+                    data.addRow([lifeX[i], deaths[i]]);
+                }
+
+                var options = {
+                    title: 'Relation between life expectancy and Covid-19 deaths.',
+                    legend: { position: 'bottom' }
+                };
+                var chart = new window.google.visualization.ColumnChart(document.getElementById('lifeExpectancy'));
+                chart.draw(data, options);
+            }
+    </script>
+}

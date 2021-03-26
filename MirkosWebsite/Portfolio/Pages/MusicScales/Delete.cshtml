@@ -1,0 +1,15 @@
+﻿@page "{scaleId:int}"
+@model Portfolio.Pages.MusicScales.DeleteModel
+@{
+}
+
+<div class="mt-3">
+    <h2>Delete!</h2>
+    <div class="alert alert-danger">
+        Are you sure you want to delete @Model.Scale.Name?
+    </div>
+    <form method="post">
+        <button type="submit" class="btn btn-danger">Yes!</button>
+        <a asp-page="./List" class="btn btn-success">Cancel</a>
+    </form>
+</div>

@@ -1,0 +1,90 @@
+﻿@page
+@model Portfolio.Pages.Covid.ListModel
+@{
+    ViewData["Title"] = "Countries";
+}
+
+
+
+<div class="image-countries full-width">
+    <div class="layer  vcenter-item">
+        <div class="col-md-12 row text-center text-light">
+            <div class="col-md-12 text-light">
+                <h2 class="display-4">COVID-19 STATISTICS BY COUNTRY</h2>
+                <p class="lead">
+                    CLICK ON A COUNTRY TO VIEW THE GRAPHS
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-7">
+            <form method="get">
+                <div class="form-group ">
+                    <div class="input-group">
+                        <input type="search" class="form-control" asp-for="SearchCountry" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-dark">
+                                Search
+                                <i class="fas fa-search"> </i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1">
+            <form method="get">
+                <select id="sortSelection" class="form-control" asp-for="SortChoice" asp-items="Model.SortBy">
+                </select>
+            </form>
+        </div>
+    </div>
+    <hr class="muted" />
+    <div class="row h5">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+            Country
+        </div>
+        <div class="col-md-2  text-center">
+            Population
+        </div>
+        <div class="col-md-2  text-center">
+            Total Cases
+        </div>
+        <div class="col-md-2  text-right">
+            Total Deaths
+        </div>
+    </div>
+    <hr class="muted" />
+
+    @foreach (var country in Model.Countries)
+    {
+        <a asp-page="./Details" asp-route-countryId="@country.Id">
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-2 h6">
+                    @country.Name
+                </div>
+                <div class="col-md-2 text-center">
+                    @($"{country.Population:n0}")
+                </div>
+                <div class="col-md-2 text-center">
+                    @($"{country.DailySummary[^1].TotalCases:n0}")
+                </div>
+                <div class="col-md-2 text-right">
+                    @($"{country.DailySummary[^1].TotalDeaths:n0}")
+                </div>
+
+            </div>
+        </a>
+        <hr class="muted" />
+    }
+</div>

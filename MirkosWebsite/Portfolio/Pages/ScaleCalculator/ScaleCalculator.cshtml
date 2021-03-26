@@ -1,0 +1,201 @@
+﻿@page
+@model Pages.ScaleCalculator.ScaleCalculatorModel
+@{
+    ViewData["Title"] = "Scale Calculator";
+}
+<div class="image-scale-calculator full-width">
+    <div class="layer  vcenter-item">
+        <div class="col-md-12 row text-center text-light">
+            <div class="col-md-12 text-light">
+                <h2 class="display-4">SCALE CALCULATOR</h2>
+                <p>
+                    THIS TOOL IS DESIGNED TO OUTPUT THE SCALES THAT CAN BE PLAYED ON A CHORD. ENTER THE KNOWN DEGREES OF THE CHORD LEAVING THE '?' WHERE THE DEGREES IS NOT KNOWN OR SPECIFIED.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <div>
+        <h3>Insert your chord here.</h3>
+    </div>
+    <form method="get">
+        <div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div>
+                        <label>Include:</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div>
+                        <label>Penthatonic</label>
+                        <input asp-for="Penthatonic" checked="checked" class="custom-radio" value="@Model.Penthatonic" />
+                        <input name="Penthatonic" type="hidden" value="false">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div>
+                        <label>Hexatonic</label>
+                        <input asp-for="Hexatonic" checked="checked" class="custom-radio" value="true" />
+                        <input name="Hexatonic" type="hidden" value="false">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div>
+                        <label>Diatonic</label>
+                        <input asp-for="Diatonic" checked="checked" class="custom-radio" value="true" />
+                        <input name="Diatonic" type="hidden" value="false">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div>
+                        <label>Octatonic</label>
+                        <input asp-for="Octatonic" checked="checked" class="custom-radio" value="true" />
+                        <input name="Octatonic" type="hidden" value="false">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div>
+                        <label>Nonatonic and over</label>
+                        <input asp-for="Nonatonic" checked="checked" class="custom-radio" value="true" />
+                        <input name="Nonatonic" type="hidden" value="false">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Root</label>
+                    <select asp-for="Root" class="form-control">
+                        @if (Model.Root == null)
+                        {
+                            <option selected="selected" value="@null">?</option>
+                        }
+                        else
+                        {
+                            <option disabled selected hidden value="@Model.Root"></option>
+                        }
+                        <option value="0">C</option>
+                        <option value="7">C♯</option>
+                        <option value="-5">D♭</option>
+                        <option value="2">D</option>
+                        <option value="9">D♯</option>
+                        <option value="-3">E♭</option>
+                        <option value="4">E</option>
+                        <option value="11">E♯</option>
+                        <option value="-1">F</option>
+                        <option value="6">F♯</option>
+                        <option value="-6">G♭</option>
+                        <option value="1">G</option>
+                        <option value="8">G♯</option>
+                        <option value="-4">A♭</option>
+                        <option value="3">A</option>
+                        <option value="10">A♯</option>
+                        <option value="-2">B♭</option>
+                        <option value="5">B</option>
+                        <option value="-7">C♭</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-2">
+                <input asp-for="Distances[0]" type="hidden" value="1" />
+                <div class="form-group">
+                    <label>Third</label>
+                    <select asp-for="Distances[2]" class="form-control">
+                        <option value="@null">?</option>
+                        <option value="4">Minor</option>
+                        <option selected="selected" value="5">Major</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Fifth</label>
+                    <select asp-for="Distances[4]" class="form-control">
+                        <option value="@null">?</option>
+                        <option value="7">Diminished</option>
+                        <option selected="selected" value="8">Perfect</option>
+                        <option value="9">Augmented</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Seventh</label>
+                    <select asp-for="Distances[6]" class="form-control">
+                        <option value="@null" selected="selected">?</option>
+                        <option value="10">Diminished</option>
+                        <option value="11">Minor</option>
+                        <option value="12">Major</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Ninth</label>
+                    <select asp-for="Distances[1]" class="form-control">
+                        <option value="@null" selected="selected">?</option>
+                        <option value="2">Minor</option>
+                        <option value="3">Major</option>
+                        <option value="4">Augmented</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Eleventh</label>
+                    <select asp-for="Distances[3]" class="form-control">
+                        <option value="@null" selected="selected">?</option>
+                        <option value="5">Diminished</option>
+                        <option value="6">Perfect</option>
+                        <option value="7">Augmented</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Thirteenth</label>
+                    <select asp-for="Distances[5]" class="form-control">
+                        <option value="@null" selected="selected">?</option>
+                        <option value="9">Minor</option>
+                        <option value="10">Major</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-success form-control">Submit Chord</button>
+            </div>
+        </div>
+    </form>
+
+    <hr class="muted" />
+
+    @if (Model.ModesWithLetterNotation != null)
+    {
+        @foreach (var mode in Model.ModesWithLetterNotation)
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    @mode.Key.Name
+                </div>
+                <div class="col-md-4">
+                    @mode.Value
+                </div>
+                <div class="col-md-4">
+                    @mode.Key.Scale.Name
+                </div>
+
+            </div>
+            <hr class="muted" />
+
+        }
+    }
+</div>
+

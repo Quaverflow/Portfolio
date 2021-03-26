@@ -1,0 +1,119 @@
+﻿@page "{recipeId:int}"
+@model Portfolio.Pages.Food.RecipeModel
+@{
+    ViewData["Title"] = "Recipe";
+
+}
+
+<div class="mt-3">
+    <div class="row">
+        <div class="col-md-3 h3">
+            <h3>@Model.Recipe.Name</h3>
+        </div>
+    </div>
+
+
+    <form method="get">
+
+        <div class="row h6">
+            <div class="col-md-1">
+                <Select onchange="submit(event)" asp-for="ModifiedServes" class="form-control" asp-items="@Model.ServesRange">
+                    <option hidden disabled selected value="@Model.Recipe.Serves"></option>
+                </Select>
+            </div>
+            <div class="col-md-3">
+                Serves:
+                <small>Change this value to scale the recipe to your needs.</small>
+            </div>
+
+            <div class="col-md-4">
+                Created By: @Model.Recipe.CreatedBy
+            </div>
+        </div>
+    </form>
+    <hr class="muted" />
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-3">
+                    Ingredients
+                </div>
+                <div class="col-md-3">
+                    Quantities
+                </div>
+                <div class="col-md-6">
+                    Notes
+                </div>
+            </div>
+            <hr class="muted" />
+            @foreach (var i in Model.Recipe.Ingredients)
+            {
+                <div class="row">
+
+                    <div class="col-md-3 ">
+                        @i.Ingredient.Name
+                    </div>
+
+                    @if (Model.NonScalableUnits.Count != 0 && Model.NonScalableUnits.ContainsKey(i.Id))
+                    {
+                        <div class="col-md-3">
+                            @Model.NonScalableUnits[i.Id] @i.UnitMeasure
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-3">
+                            @i.Quantity @i.UnitMeasure
+                        </div>
+                    }
+                    <div class="col-md-6">
+                        @i.Notes
+                    </div>
+                </div>
+                <hr class="muted p-0" />
+            }
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.Recipe.Video))
+        {
+            <div class="col-md-4 text-center">
+                <object class="youtubeVid" data="@Model.Recipe.Video"></object>
+            </div>
+        }
+    </div>
+</div>
+@foreach (var step in Model.Recipe.Steps)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-8 h3">
+                    <h4>@step.Name</h4>
+                    <p class="lead text-dark">@step.Body</p>
+                </div>
+            </div>
+
+            <div class="row">
+                @if (step.Video != null)
+                {
+                    <div class="col-md-4 text-center">
+                        <object class="youtubeVid" data="@step.Video"></object>
+                    </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-md-8 h3">
+                    <hr class="muted p-0" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<form method="post">
+    <a class="btn btn-danger" asp-page="./Delete" asp-route-recipeId="@Model.Recipe.Id">Delete</a>
+</form>
+
+@section Scripts
+{
+
+}

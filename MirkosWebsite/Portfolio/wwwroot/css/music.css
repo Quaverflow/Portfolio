@@ -1,0 +1,18 @@
+﻿#scale {
+    font-size: medium;
+
+}
+.image-music-list {
+    background-image: url(../image/music/List.jpg);
+    height: 500px;
+}
+
+.image-music-details {
+    background-image: url(../image/music/Details.jpg);
+    height: 500px;
+}
+.image-scale-calculator {
+    background-image: url(../image/music/ScaleCalculator.jpg);
+    background-position-y: 30%;
+    height: 700px;
+}

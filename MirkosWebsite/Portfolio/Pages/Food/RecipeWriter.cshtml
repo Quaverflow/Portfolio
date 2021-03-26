@@ -1,0 +1,151 @@
+﻿@page
+@model Portfolio.Pages.Food.RecipeWriterModel
+@{
+    ViewData["Title"] = "Recipe Writer";
+}
+
+
+<div class="image-recipe-writer full-width">
+    <div class="layer  vcenter-item">
+        <div class="col-md-12 row text-center text-light">
+            <div class="col-md-12 text-light">
+                <h2 class="display-4">WRITE YOUR VERY OWN RECIPE HERE</h2>
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8">
+                <p class="lead">
+                    1) ENTER A REALISTIC VALUE FOR HOW MANY PEOPLE IT SERVES. PEOPLE WILL BE ABLE TO SCALE YOUR RECIPE INGREDIENTS ACCORDING TO THAT VALUE. <br />
+                    2) ENTER YOUR INGREDIENTS. SELECT 'UNIT' IF YOU WANT TO USE THE AMOUNT RATHER THAN THE WEIGHT. <br />
+                    3) ADD YOUR VIDEO (YOUTUBE ONLY).
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mt-3">
+    <form method="post" id="recipeForm">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Recipe name</label>
+                        <input asp-for="Recipe.Name" class="form-control" value="@Model.Recipe.Name" />
+                        <span class="text-danger small" asp-validation-for="Recipe.Name"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Your name</label>
+                        <input asp-for="Recipe.CreatedBy" class="form-control" value="@Model.Recipe.CreatedBy" />
+                        <span asp-validation-for="Recipe.CreatedBy" class="text text-danger small"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Serves</label>
+                        <Select asp-for="Recipe.Serves" class="form-control" asp-items="@Model.ServesRange">
+                            <option selected value="@Model.Recipe.Serves">@Model.Recipe.Serves</option>
+                        </Select>
+                        <span asp-validation-for="Recipe.Serves" class="text text-danger small"></span>
+                    </div>
+                </div>
+                <hr class="muted" />
+                <div id="clonableContainer">
+                    <div class="row clonable">
+
+                        <div class="col-md-3">
+                            <label>Ingredient</label>
+                            <select id="notEmpty0" name="Recipe.Ingredients[0].Ingredient.Id" data-live-search="true"
+                                    class="form-control">
+                                @foreach (var ingredient in @Model.Ingredients)
+                                {
+                                    <option value="@ingredient.Id">@ingredient.Name</option>
+                                }
+                            </select>
+                            <input hidden asp-for="Recipe.Ingredients[0].Ingredient.Name" value="validatedautomatically" />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Quantity</label>
+                            <input name="Recipe.Ingredients[0].Quantity" id="quantity0" value="0" class="form-control" />
+                            <span asp-validation-for="Recipe.Ingredients[0].Quantity" class="text text-danger small"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Unit Measure</label>
+                            <select name="Recipe.Ingredients[0].UnitMeasure" id="unitMeasure" class="form-control" asp-items="@Model.UnitsToDisplay">
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label name="Recipe.Ingredients[0].Notes">Notes</label>
+                            <input name="Recipe.Ingredients[0].Notes" class="form-control" />
+                            <span asp-validation-for="Recipe.Ingredients[0].Notes" class="text text-danger small"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <hr class="muted" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row pt-4 pb-3">
+                    <div class="col-md-3">
+                        <input class="btn btn-sm btn-success" id="add" value="Add Ingredient" />
+                    </div>
+                    <div class="col-md-3">
+                        <input class="btn btn-sm btn-danger" id="remove" value="Remove Ingredient" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Embed video</label>
+                        <div class="form-group">
+                            <div class="input-group">
+                                @if (Model.Recipe.Video != null)
+                                {
+                                    <input asp-for="Recipe.Video" class="form-control" value="@Model.Recipe.Video" />
+                                }
+                                else
+                                {
+                                    <input asp-for="Recipe.Video" class="form-control" />
+                                }
+                                <span class="input-group-btn">
+                                    <button disabled class="btn btn-dark">
+                                        <i class="fas fa-angle-left"></i>
+                                        <i class="fas fa-angle-right"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 text-center pt-md-4">
+                <h4>Couldn't find the ingredient you were looking for?</h4>
+                <h5> Add it to our database!</h5>
+                <a class="btn btn-success" asp-page="./AddIngredient">Go!</a>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Next</button>
+    </form>
+
+
+
+
+
+    <div class="modal fade" id="error" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-dark">Invalid input.</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="alertEmptyField" class="text-dark"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

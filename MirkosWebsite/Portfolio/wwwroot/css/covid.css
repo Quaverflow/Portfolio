@@ -1,0 +1,20 @@
+﻿
+
+#stats-container {
+    background-color: white;
+}
+
+.stats {
+    width: 100%;
+}
+
+.stats-height-700 {
+    height:700px
+}
+.stats-height-500 {
+    height: 500px
+}
+.stats-height-1000 {
+    height: 1000px
+}
+

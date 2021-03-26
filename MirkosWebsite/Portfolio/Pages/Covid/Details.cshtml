@@ -1,0 +1,208 @@
+﻿@page "{countryId:int}"
+@model Portfolio.Pages.Covid.DetailsModel
+@{
+    ViewData["Title"] = "Countries";
+}
+<div class="mt-3">
+    <div id="stats-container">
+        <h2 class="text-dark text-center"><strong>@Model.Country.Name</strong></h2>
+        <div class="row">
+            <div id="chart0" class="col-md-12 stats-height-700">
+            </div>
+        </div>
+        <div class="row">
+            <div id="chart1" class="col-md-12 stats-height-700">
+            </div>
+        </div>
+        <div class="row">
+            <div id="chart2" class="col-md-6 stats-height-700">
+            </div>
+            <div id="chart3" class="col-md-6 stats-height-700">
+            </div>
+        </div>
+        <div class="row text text-dark">
+            <div class="col-md-12 h5">
+                Population: @($"{Model.Country.Population:n0}")
+            </div>
+        </div>
+        <hr class="muted" />
+        <div class="row text text-dark">
+            <div class="col-md-12 h5">
+                Population density: @Model.Country.PopulationDensity per Km&#178
+            </div>
+        </div>
+        <hr class="muted" />
+        <div class="row text text-dark">
+            <div class="col-md-12 h5">
+                Total cases: @($"{Model.Country.DailySummary[^1].TotalCases:n0}")
+            </div>
+        </div>
+        <hr class="muted" />
+        <div class="row text text-dark">
+            <div class="col-md-12 h5">
+                Total deaths: @($"{Model.Country.DailySummary[^1].TotalDeaths:n0}")
+            </div>
+        </div>
+        <hr class="muted" />
+        <div class="row text text-dark">
+            <div class="col-md-12 h5">
+                Ratio Population/Covid-19 deaths: @Math.Round(Model.Country.RatioDeathToPopulation, 4)%
+            </div>
+        </div>
+        <hr class="muted" />
+        <div class="row text text-dark">
+            <div class="col-md-12 h5">
+                Ratio Covid-19 infections/deaths: @Model.Country.InfectionDeathRatio%
+            </div>
+        </div>
+        <hr class="muted" />
+        <div class="row text text-dark">
+            <div class="col-md-12 h5">
+                Life Expectancy: @Model.Country.LifeExpectancy
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new window.google.visualization.DataTable();
+
+                data.addColumn('date', 'Date');
+                data.addColumn('number', 'Cases');
+                data.addColumn('number', 'Deaths');
+
+                var month = [];
+                var day = [];
+                var year = [];
+                var cases = [];
+                var deaths = [];
+                    @foreach (var day in Model.Country.DailySummary)
+                    {
+                        <text>year.push('@day.Date.Year');</text>
+                        <text>month.push('@day.Date.Month');</text>
+                        <text>day.push('@day.Date.Day');</text>
+                        <text>cases.push(parseFloat('@day.NewCases'));</text>
+                        <text>deaths.push(parseFloat('@day.NewDeaths'));</text>
+                    }
+                for (var i = 0; i < cases.length; i++) {
+                    data.addRow([new Date(year[i], month[i]-1, day[i]), cases[i], deaths[i]]);
+                }
+
+                var options = {
+                    title: 'Daily infections and deaths',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new window.google.visualization.LineChart(document.getElementById('chart1'));
+
+                chart.draw(data, options);
+            }
+    </script>
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new window.google.visualization.DataTable();
+
+                data.addColumn('date', 'Date');
+                data.addColumn('number', 'Cases');
+                data.addColumn('number', 'Deaths');
+
+                var month = [];
+                var day = [];
+                var year = [];
+                var cases = [];
+                var deaths = [];
+                    @foreach (var day in Model.Country.DailySummary)
+                    {
+                        <text>year.push('@day.Date.Year');</text>
+                        <text>month.push('@day.Date.Month');</text>
+                        <text>day.push('@day.Date.Day');</text>
+                        <text>cases.push(parseFloat('@day.TotalCases'));</text>
+                        <text>deaths.push(parseFloat('@day.TotalDeaths'));</text>
+                    }
+                for (var i = 0; i < cases.length; i++) {
+                    data.addRow([new Date(year[i], month[i]-1, day[i]), cases[i], deaths[i]]);
+                }
+
+                var options = {
+                    title: 'Total infections and deaths',
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new window.google.visualization.LineChart(document.getElementById('chart0'));
+
+                chart.draw(data, options);
+            }
+    </script>
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new window.google.visualization.DataTable();
+
+                data.addColumn('string', 'Day');
+                data.addColumn('number', 'Deaths');
+
+                var days = [];
+                var deaths = [];
+                    @foreach (var day in Model.DeathsDaysOfTheWeek)
+                    {
+                        <text>days.push('@day.Key');</text>
+                        <text>deaths.push(parseFloat('@day.Value'));</text>
+                    }
+                for (var i = 0; i < days.length; i++) {
+                    data.addRow([days[i], deaths[i]]);
+                }
+
+                var options = {
+                    title: 'Reported deaths by day of the week',
+                    colors: ["#cf1b0e"],
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new window.google.visualization.ColumnChart(document.getElementById('chart2'));
+                chart.draw(data, options);
+            }
+    </script>
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new window.google.visualization.DataTable();
+
+                data.addColumn('string', 'Day');
+                data.addColumn('number', 'Cases');
+
+                var days = [];
+                var cases = [];
+                    @foreach (var day in Model.CasesDaysOfTheWeek)
+                    {
+                        <text>days.push('@day.Key');</text>
+                        <text>cases.push(parseFloat('@day.Value'));</text>
+                    }
+                for (var i = 0; i < days.length; i++) {
+                    data.addRow([days[i], cases[i]]);
+                }
+
+                var options = {
+                    title: 'Reported cases by day of the week',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new window.google.visualization.ColumnChart(document.getElementById('chart3'));
+                chart.draw(data, options);
+            }
+    </script>
+}
