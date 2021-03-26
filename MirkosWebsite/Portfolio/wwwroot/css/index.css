@@ -24,6 +24,14 @@
     margin-bottom: -15px;
 }
 
+.image-profile-index {
+    background-image: url(../image/profilepic.jpg);
+    background-position-y: 50%;
+    height: 800px;
+    margin-top: 20px;
+    margin-bottom: -15px;
+}
+
 .full-width {
     width: 100vw;
     position: relative;
@@ -34,7 +42,7 @@
 }
 
 .layer {
-    background-color: rgbA(34, 34, 39, 0.80);
+    background-color: rgba(34, 34, 39, 0.80);
     position: absolute;
     top: 0;
     left: 0;
