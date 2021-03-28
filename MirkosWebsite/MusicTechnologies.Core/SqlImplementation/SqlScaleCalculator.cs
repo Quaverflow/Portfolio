@@ -19,13 +19,8 @@ namespace MusicTechnologies.Core.SqlImplementation
         public string GetRomanNumbersScale(Mode mode)
         {
             var intervals = mode.Intervals.OrderBy(i => i.Distance);
-            var scaleInRomanNum = "";
-            foreach (var interval in intervals)
-            {
-                scaleInRomanNum += IntervalToRomanNum(interval) + " | ";
-            }
 
-            return scaleInRomanNum;
+            return intervals.Aggregate("", (current, interval) => current + (IntervalToRomanNum(interval) + " | "));
 
             static string IntervalToRomanNum(Interval interval)
             {
@@ -66,7 +61,7 @@ namespace MusicTechnologies.Core.SqlImplementation
             var matchingModes = GetMatchingModes(distances, allModes);
 
             var matchingModesWithMatchingLength = ModeLengthsAllowed(penthatonic, hexatonic, diatonic, octatonic, nonatonic, matchingModes)
-                                                 .OrderBy(m => m.Intervals.Count)
+                                                  .OrderBy(m => m.Intervals.Count)
                                                  .ThenBy(m => m.ScaleId)
                                                  .ToList();
 

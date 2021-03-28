@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Covid.Core", "..\Covid.Core
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicTechnologies.Tests", "..\MusicTechnologies.Tests\MusicTechnologies.Tests.csproj", "{B95285D8-AD2A-4228-BFEC-5C72581D5C8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Covid.Tests", "..\Covid.Tests\Covid.Tests.csproj", "{9D97C714-D8A1-41AC-A163-97D7CEE30CAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Covid.Tests", "..\Covid.Tests\Covid.Tests.csproj", "{9D97C714-D8A1-41AC-A163-97D7CEE30CAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Food.Tests", "..\Food.Tests\Food.Tests.csproj", "{ED699103-B685-4647-AF55-6EFD7863C286}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Food.Tests", "..\Food.Tests\Food.Tests.csproj", "{ED699103-B685-4647-AF55-6EFD7863C286}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MusicTechnologies.Core.Utilities;
 
-namespace MusicTechnologies.Core.SqlImplementation
+namespace MusicTechnologies.Core.SqlImplementation 
 
 {
     public class SqlMode : IModeData
